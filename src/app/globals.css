@@ -1,0 +1,327 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   Design tokens
+   --------------------------------------------------------------------------
+   Tailwind v4 is configured entirely from CSS. Every value below becomes a
+   utility class, so the palette is a single source of truth.
+
+   Brand defaults are mirrored in the `site_settings` table (brand colours are
+   administrator-editable). Phase 2 injects the saved values as CSS custom
+   property overrides on <html>, which re-themes the whole site without a
+   rebuild. The values here are the fallback used before any admin edit exists.
+   ========================================================================== */
+
+@theme {
+  /* ---- Typography ------------------------------------------------------ */
+  --font-sans:
+    var(--font-inter), 'Inter', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: var(--font-sans);
+
+  --text-display-hero: clamp(2.5rem, 1.2rem + 4.6vw, 4.75rem);
+  --text-display-hero--line-height: 1.04;
+  --text-display-hero--letter-spacing: -0.028em;
+
+  --text-display-lg: clamp(2rem, 1.1rem + 3vw, 3.5rem);
+  --text-display-lg--line-height: 1.1;
+  --text-display-lg--letter-spacing: -0.024em;
+
+  --text-display-md: clamp(1.5rem, 1rem + 1.6vw, 2.25rem);
+  --text-display-md--line-height: 1.18;
+  --text-display-md--letter-spacing: -0.018em;
+
+  --text-display-sm: clamp(1.25rem, 1rem + 0.8vw, 1.625rem);
+  --text-display-sm--line-height: 1.28;
+  --text-display-sm--letter-spacing: -0.012em;
+
+  /* ---- Colour: brand --------------------------------------------------- */
+  /* Primary accent — red. */
+  --color-brand-50: #fff1f2;
+  --color-brand-100: #ffe0e3;
+  --color-brand-200: #ffc5ca;
+  --color-brand-300: #ff9aa4;
+  --color-brand-400: #f96a7a;
+  --color-brand-500: #e11d2e;
+  --color-brand-600: #c2182a;
+  --color-brand-700: #a11422;
+  --color-brand-800: #851520;
+  --color-brand-900: #701620;
+  --color-brand-950: #3d060b;
+
+  /* Secondary accent — blue. */
+  --color-accent-50: #eff5ff;
+  --color-accent-100: #dbe8fe;
+  --color-accent-200: #bfd6fe;
+  --color-accent-300: #93bafd;
+  --color-accent-400: #6094fa;
+  --color-accent-500: #3b6ef6;
+  --color-accent-600: #1d4ed8;
+  --color-accent-700: #1e3fbf; /* pressed / active button state */
+  --color-accent-800: #1e3a9b;
+  --color-accent-900: #1e357a;
+  --color-accent-950: #17224a;
+
+  /* ---- Colour: neutrals (dark charcoal text) --------------------------- */
+  --color-ink: #111827;
+  --color-ink-soft: #1f2937;
+
+  /* ---- Shape ----------------------------------------------------------- */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+
+  /* ---- Elevation ------------------------------------------------------- */
+  --shadow-e1: 0 1px 2px rgb(17 24 39 / 0.04), 0 1px 3px rgb(17 24 39 / 0.06);
+  --shadow-e2:
+    0 2px 4px rgb(17 24 39 / 0.03), 0 8px 24px -6px rgb(17 24 39 / 0.1);
+  --shadow-e3:
+    0 4px 8px rgb(17 24 39 / 0.03), 0 24px 48px -12px rgb(17 24 39 / 0.14);
+  --shadow-glow-brand: 0 8px 32px -8px rgb(225 29 46 / 0.34);
+  --shadow-glow-accent: 0 8px 32px -8px rgb(29 78 216 / 0.32);
+
+  /* ---- Motion ---------------------------------------------------------- */
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 600ms;
+
+  /* ---- Layout ---------------------------------------------------------- */
+  --spacing-section: 6rem;
+  --width-content: 76rem;
+}
+
+/* ==========================================================================
+   Runtime-themeable brand variables
+   These are what Phase 2 overrides from site_settings.
+   ========================================================================== */
+
+:root {
+  --brand-primary: #e11d2e;
+  --brand-primary-hover: #c2182a;
+  --brand-secondary: #1d4ed8;
+  --brand-active: #1e3fbf;
+  --brand-text: #111827;
+
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --surface-sunken: #f1f5f9;
+  --border-subtle: rgb(17 24 39 / 0.08);
+  --border-strong: rgb(17 24 39 / 0.16);
+
+  --glass-bg: rgb(255 255 255 / 0.66);
+  --glass-border: rgb(255 255 255 / 0.7);
+  --glass-shadow: 0 8px 32px -12px rgb(17 24 39 / 0.16);
+}
+
+/* ==========================================================================
+   Base layer
+   ========================================================================== */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--border-subtle);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv11', 'ss01';
+    font-variation-settings: 'opsz' 32;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* A single, consistent, high-contrast focus ring everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--brand-secondary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background-color: rgb(225 29 46 / 0.16);
+    color: var(--color-ink);
+  }
+
+  /* Respect the OS-level reduced-motion preference for every animation,
+     including CSS transitions and Tailwind utilities. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Visible skip link for keyboard users; hidden until focused. */
+  .skip-link {
+    position: absolute;
+    top: -100px;
+    left: 1rem;
+    z-index: 100;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-md);
+    background: var(--color-ink);
+    color: white;
+    font-weight: 600;
+    transition: top var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .skip-link:focus-visible {
+    top: 1rem;
+  }
+}
+
+/* ==========================================================================
+   Utility layer — glassmorphism and reusable surfaces
+   ========================================================================== */
+
+@utility glass {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+@utility glass-strong {
+  background-color: rgb(255 255 255 / 0.86);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+@utility glass-dark {
+  background-color: rgb(17 24 39 / 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgb(255 255 255 / 0.12);
+}
+
+/* Subtle animated background wash used behind hero sections. */
+@utility bg-mesh-subtle {
+  background-image:
+    radial-gradient(
+      42rem 30rem at 12% -8%,
+      rgb(225 29 46 / 0.09),
+      transparent 62%
+    ),
+    radial-gradient(
+      38rem 28rem at 92% 4%,
+      rgb(29 78 216 / 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      30rem 24rem at 52% 108%,
+      rgb(29 78 216 / 0.06),
+      transparent 62%
+    );
+}
+
+/* Fine 1px grid, for premium fintech texture. */
+@utility bg-grid-fine {
+  background-image:
+    linear-gradient(to right, rgb(17 24 39 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(17 24 39 / 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* Text gradient for display headlines. */
+@utility text-gradient-brand {
+  background-image: linear-gradient(
+    100deg,
+    var(--brand-primary),
+    var(--brand-secondary)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   Slow ambient motion for background elements.
+   Purely decorative and fully disabled under reduced-motion.
+   -------------------------------------------------------------------------- */
+@keyframes ambient-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2.5%, -2%, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgb(225 29 46 / 0.28);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgb(225 29 46 / 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(225 29 46 / 0);
+  }
+}
+
+@layer utilities {
+  .animate-ambient {
+    animation: ambient-drift 22s var(--ease-in-out-soft) infinite;
+    will-change: transform;
+  }
+
+  .animate-pulse-ring {
+    animation: pulse-ring 2.4s var(--ease-in-out-soft) infinite;
+  }
+
+  /* Skeleton shimmer for loading states. */
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--surface-sunken);
+  }
+
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 0.7),
+      transparent
+    );
+    animation: shimmer 1.6s infinite;
+  }
+}

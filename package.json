@@ -1,0 +1,70 @@
+{
+  "name": "immi-website",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Premium immigration agency website with secure administration portal",
+  "engines": {
+    "node": ">=22.12.0 <23"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "db:check": "drizzle-kit check",
+    "db:studio": "drizzle-kit studio",
+    "db:reset:local": "tsx scripts/reset-local-db.ts",
+    "seed:admin": "tsx scripts/seed-admin.ts",
+    "seed:destinations": "tsx scripts/seed-destinations.ts",
+    "verify:schema": "tsx scripts/verify-schema.ts",
+    "test": "npm run test:core && npm run test:cms",
+    "seed:demo": "tsx scripts/seed-demo-content.ts",
+    "admin:unlock": "tsx scripts/unlock-admin.ts",
+    "test:core": "tsx --test tests/*.test.ts",
+    "test:cms": "IMMI_TEST_STUBS=1 tsx --import ./tests/support/test-stubs.ts --test tests/cms/*.test.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8",
+    "@libsql/client": "0.18.0",
+    "@netlify/blobs": "11.1.7",
+    "@node-rs/argon2": "2.2.2",
+    "clsx": "2.1.1",
+    "drizzle-orm": "0.45.4",
+    "framer-motion": "14.9.0",
+    "lucide-react": "1.67.0",
+    "next": "15.5.29",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-markdown": "^10.1.0",
+    "rehype-sanitize": "^6.0.0",
+    "remark-gfm": "^4.0.1",
+    "tailwind-merge": "3.7.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@netlify/plugin-nextjs": "5.16.6",
+    "@tailwindcss/postcss": "4.3.4",
+    "@types/node": "22.20.0",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.4",
+    "dotenv": "18.0.9",
+    "drizzle-kit": "0.31.11",
+    "eslint": "9.39.5",
+    "eslint-config-next": "15.5.29",
+    "tailwindcss": "4.3.4",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  },
+  "overrides": {
+    "postcss": "8.5.32",
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "11.0.4"
+    },
+    "@esbuild-kit/core-utils": {
+      "esbuild": "0.25.12"
+    }
+  }
+}
